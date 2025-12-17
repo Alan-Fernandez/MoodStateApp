@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JokeController;
 
 Route::group([
     'prefix' => 'auth'
@@ -9,5 +10,7 @@ Route::group([
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
     Route::post('refresh', [AuthController::class, 'refresh'])->middleware('auth:api');
-    Route::post('me', [AuthController::class, 'me'])->middleware('auth:api');
+    Route::get('me', [AuthController::class, 'me'])->middleware('auth:api');
 });
+
+Route::get('/jokes/random', [JokeController::class, 'random'])->middleware('auth:api');

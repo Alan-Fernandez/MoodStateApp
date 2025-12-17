@@ -46,14 +46,14 @@ test('authenticated user can access protected route', function () {
 
     $response = $this->withHeaders([
         'Authorization' => 'Bearer ' . $token,
-    ])->postJson('/api/auth/me');
+    ])->getJson('/api/auth/me');
 
     $response->assertStatus(200)
         ->assertJson(['id' => $user->id]);
 });
 
 test('unauthenticated user cannot access protected route', function () {
-    $response = $this->postJson('/api/auth/me');
+    $response = $this->getJson('/api/auth/me');
 
     $response->assertStatus(401);
 });
