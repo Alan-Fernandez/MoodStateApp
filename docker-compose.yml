@@ -10,24 +10,26 @@ services:
       APP_ENV: local
       APP_KEY: base64:Hg+D2qwOYM5y1Jw30o0mVBdYufM4lzhWFoCJoWio0vA=
       APP_DEBUG: true
-      JWT_SECRET: TqxEnikvQA83MSR7z2krtWqOpeQm2oXiXu9ztH4JmuE7yGrh5qcTdKT2wHW27fS2
       APP_URL: https://mood_state.vertexinfra.digital
+
+      JWT_SECRET: TqxEnikvQA83MSR7z2krtWqOpeQm2oXiXu9ztH4JmuE7yGrh5qcTdKT2wHW27fS2
+
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: 3306
       DB_DATABASE: incuca
       DB_USERNAME: incuca
       DB_PASSWORD: secret
+
       GEEK_JOKES_API_URL: https://geek-jokes.sameerkumar.website/api
-    ports:
-      - "8085:8000"
+
     depends_on:
       db:
         condition: service_healthy
-    volumes:
-      - ./backend:/var/www
+
     networks:
       - incuca-network
+
 
   frontend:
     build:
