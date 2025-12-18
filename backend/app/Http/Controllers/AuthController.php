@@ -25,6 +25,42 @@ class AuthController extends Controller
     }
 
     /**
+     * Register a new user.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        $token = $this->guard()->login($user);
+
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user,
+            'authorization' => [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => $this->guard()->factory()->getTTL() * 60
+            ]
+        ], 201);
+    }
+
+    /**
      * Get the authenticated User.
      *
      * @return \Illuminate\Http\JsonResponse

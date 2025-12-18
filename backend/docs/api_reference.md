@@ -9,7 +9,40 @@ A API segue os padrões RESTful e utiliza JSON para a troca de dados.
 Todas as rotas protegidas requerem o seguinte cabeçalho:
 `Authorization: Bearer <seu_token_jwt>`
 
-### 1. Iniciar Sessão (Login)
+### 1. Registrar Usuário (Register)
+Cria um novo usuário no sistema.
+
+*   **Método:** `POST`
+*   **Endpoint:** `/auth/register`
+*   **Acesso:** Público
+*   **Body:**
+    ```json
+    {
+        "name": "Novo Usuário",
+        "email": "novo@exemplo.com",
+        "password": "senha_segura"
+    }
+    ```
+*   **Resposta (201 Created):**
+    ```json
+    {
+        "message": "User successfully registered",
+        "user": {
+            "name": "Novo Usuário",
+            "email": "novo@exemplo.com",
+            "updated_at": "...",
+            "created_at": "...",
+            "id": 2
+        },
+        "authorization": {
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbG...",
+            "token_type": "bearer",
+            "expires_in": 3600
+        }
+    }
+    ```
+
+### 2. Iniciar Sessão (Login)
 Gera um token JWT para um usuário existente.
 
 *   **Método:** `POST`
@@ -31,7 +64,7 @@ Gera um token JWT para um usuário existente.
     }
     ```
 
-### 2. Obter Usuário Atual (Me)
+### 3. Obter Usuário Atual (Me)
 Retorna as informações do usuário proprietário do token.
 
 *   **Método:** `GET`
@@ -47,14 +80,14 @@ Retorna as informações do usuário proprietário do token.
     }
     ```
 
-### 3. Atualizar Token (Refresh)
+### 4. Atualizar Token (Refresh)
 Invalida o token atual e retorna um novo com tempo de vida reiniciado.
 
 *   **Método:** `POST`
 *   **Endpoint:** `/auth/refresh`
 *   **Acesso:** Privado (Token requerido)
 
-### 4. Encerrar Sessão (Logout)
+### 5. Encerrar Sessão (Logout)
 Invalida o token atual na lista negra (blacklist) do servidor.
 
 *   **Método:** `POST`

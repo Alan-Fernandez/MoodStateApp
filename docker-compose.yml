@@ -1,0 +1,65 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: incuca-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: Laravel
+      APP_ENV: local
+      APP_KEY: base64:Hg+D2qwOYM5y1Jw30o0mVBdYufM4lzhWFoCJoWio0vA=
+      APP_DEBUG: true
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: incuca
+      DB_USERNAME: incuca
+      DB_PASSWORD: secret
+      GEEK_JOKES_API_URL: https://geek-jokes.sameerkumar.website/api
+    depends_on:
+      - db
+    networks:
+      - incuca-network
+
+  frontend:
+    build:
+      context: ./MoodStateApp
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8000/api
+    container_name: incuca-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - incuca-network
+
+  db:
+    image: mysql:8.0
+    container_name: incuca-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: incuca
+      MYSQL_USER: incuca
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - incuca-network
+    command: --default-authentication-plugin=mysql_native_password
+
+networks:
+  incuca-network:
+    driver: bridge
+
+volumes:
+  db_data:
