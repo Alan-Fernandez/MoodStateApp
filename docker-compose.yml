@@ -64,7 +64,7 @@ services:
     networks:
       - incuca-network
     command: --default-authentication-plugin=mysql_native_password
-  
+
   tunnel:
     image: cloudflare/cloudflared:latest
     container_name: incuca-tunnel
