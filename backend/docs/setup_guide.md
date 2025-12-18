@@ -5,7 +5,26 @@
 *   Composer
 *   Git
 
-## Passos de Instalação
+## 🐳 Docker (Recomendado)
+
+O projeto está configurado para rodar totalmente em Docker. Para iniciar o ambiente:
+
+1.  Na raiz do projeto (um nível acima desta pasta `backend`), execute:
+    ```bash
+    docker-compose up --build
+    ```
+
+2.  O container irá automaticamente:
+    *   Instalar dependências.
+    *   Configurar o ambiente (`.env`).
+    *   Gerar chaves.
+    *   Executar migrações e seeders.
+
+Não é necessário executar comandos manuais dentro do container.
+
+## 🛠 Instalação Manual (Sem Docker)
+
+Se preferir rodar localmente sem Docker:
 
 1.  **Clonar o repositório e instalar dependências:**
     ```bash
@@ -41,12 +60,3 @@ O sistema de seeders (`DatabaseSeeder` -> `AdminUserSeeder`) garante a criação
 *   **Senha:** `seumamesapossuirtrespernaschamadasqualidadeprecobaixoevelocidadeelaseriacapenga`
 
 > **Nota:** A senha é armazenada de forma segura utilizando hashing (Bcrypt). Não é possível recuperá-la, apenas verificá-la através do processo de login.
-
-## 🐳 Docker (Opcional)
-
-Se preferir usar Docker (via Laravel Sail), certifique-se de ter o Docker Desktop rodando:
-
-```bash
-./vendor/bin/sail up -d
-./vendor/bin/sail artisan migrate --seed
-```

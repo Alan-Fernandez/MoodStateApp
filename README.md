@@ -35,7 +35,14 @@ Uma vez iniciado, você pode acessar os serviços em:
 - **Frontend (Vue.js):** [http://localhost:3000](http://localhost:3000)
 - **Backend API (Laravel):** [http://localhost:8000/api](http://localhost:8000/api)
 
-## 📦 Estrutura do Projeto
+## � Credenciais de Acesso
+
+O sistema é inicializado com um usuário administrador padrão:
+
+- **Email:** `cliente@incuca.com.br`
+- **Senha:** `seumamesapossuirtrespernaschamadasqualidadeprecobaixoevelocidadeelaseriacapenga`
+
+## �📦 Estrutura do Projeto
 
 ```
 /

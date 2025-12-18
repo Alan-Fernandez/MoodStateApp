@@ -13,14 +13,27 @@ fi
 if [ ! -f ".env" ]; then
     echo "Creating .env file..."
     cp .env.example .env
-    php artisan key:generate
-    php artisan jwt:secret --force
 fi
 
 # Wait for database to be ready
 echo "Waiting for database connection..."
-# Simple wait loop (could be improved with wait-for-it.sh)
-sleep 10
+php -r "
+\$host = getenv('DB_HOST');
+\$port = getenv('DB_PORT');
+\$maxTries = 60;
+for (\$i = 0; \$i < \$maxTries; \$i++) {
+    \$conn = @fsockopen(\$host, \$port);
+    if (\$conn) {
+        fclose(\$conn);
+        echo 'Database is ready!' . PHP_EOL;
+        exit(0);
+    }
+    echo 'Waiting for database...' . PHP_EOL;
+    sleep(2);
+}
+echo 'Database not ready.' . PHP_EOL;
+exit(1);
+"
 
 # Run migrations
 echo "Running migrations..."
