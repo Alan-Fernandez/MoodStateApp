@@ -1,148 +1,99 @@
-# Incuca Fullstack Test - Dockerized
+# Teste Fullstack Incuca - Dockerizado
 
-Este proyecto contiene una aplicación Fullstack (Laravel + Vue.js) completamente dockerizada para facilitar su despliegue y evaluación.
+Este projeto contém uma aplicação Fullstack (Laravel + Vue.js) totalmente dockerizada para facilitar a implantação e avaliação.
 
-## 🚀 Cómo levantar el proyecto
+## 🚀 Como executar o projeto
 
-El proyecto está configurado para iniciarse con un solo comando utilizando Docker Compose.
+O projeto está configurado para ser iniciado com um único comando usando Docker Compose.
 
-### Prerrequisitos
-- Docker Desktop instalado y corriendo.
+### Pré-requisitos
+- Docker Desktop instalado e em execução.
 
-### Pasos
-1. Clonar el repositorio.
-2. Ejecutar el siguiente comando en la raíz del proyecto:
+### Passos
+1. Clonar o repositório.
+2. Executar o seguinte comando na raiz do projeto:
 
 ```bash
 docker-compose up --build
 ```
 
-El flag `--build` asegura que se construyan las imágenes con los últimos cambios.
+A flag `--build` garante que as imagens sejam construídas com as alterações mais recentes.
 
-El proceso de inicio realizará automáticamente:
-- Construcción de imágenes de Backend y Frontend.
-- Levantamiento de base de datos MySQL.
-- Instalación de dependencias de PHP (Composer).
-- Ejecución de migraciones y seeders.
-- Despliegue del servidor web.
+O processo de inicialização realizará automaticamente:
+- Construção das imagens de Backend e Frontend.
+- Inicialização do banco de dados MySQL.
+- Instalação de dependências PHP (Composer).
+- Execução de migrações e seeders.
+- Implantação do servidor web.
 
-Espere a que los logs indiquen que el servidor Laravel ha iniciado (`Starting Laravel server...`).
+Aguarde até que os logs indiquem que o servidor Laravel foi iniciado (`Starting Laravel server...`).
 
-## 🌐 URLs de Acceso
+## 🌐 URLs de Acesso
 
-Una vez levantado, puede acceder a los servicios en:
+Uma vez iniciado, você pode acessar os serviços em:
 
 - **Frontend (Vue.js):** [http://localhost:3000](http://localhost:3000)
 - **Backend API (Laravel):** [http://localhost:8000/api](http://localhost:8000/api)
 
-## 📦 Estructura del Proyecto
+## 📦 Estrutura do Projeto
 
 ```
 /
-├── backend/            # Código fuente Laravel
-│   ├── Dockerfile      # Configuración Docker para Backend
+├── backend/            # Código fonte Laravel
+│   ├── Dockerfile      # Configuração Docker para Backend
 │   └── ...
-├── MoodStateApp/       # Código fuente Vue.js (Frontend)
-│   ├── Dockerfile      # Configuración Docker para Frontend
-│   ├── nginx.conf      # Configuración Nginx para SPA
+├── MoodStateApp/       # Código fonte Vue.js (Frontend)
+│   ├── Dockerfile      # Configuração Docker para Frontend
+│   ├── nginx.conf      # Configuração Nginx para SPA
 │   └── ...
-├── docker-compose.yml  # Orquestación de servicios
-└── README.md           # Documentación
+├── docker-compose.yml  # Orquestração de serviços
+└── README.md           # Documentação
 ```
 
-## 🛠 Servicios Docker
+## 🛠 Serviços Docker
 
-El archivo `docker-compose.yml` define 3 servicios principales:
+O arquivo `docker-compose.yml` define 3 serviços principais:
 
 1.  **backend**:
-    -   Imagen basada en `php:8.4-fpm`.
-    -   Instala dependencias de sistema y extensiones PHP necesarias.
-    -   Ejecuta `composer install`, migraciones y seeders al inicio.
-    -   Expone la API en el puerto `8000`.
-    -   Se conecta a la base de datos `db`.
+    -   Imagem baseada em `php:8.4-fpm`.
+    -   Instala dependências do sistema e extensões PHP necessárias.
+    -   Executa `composer install`, migrações e seeders na inicialização.
+    -   Expõe a API na porta `8000`.
+    -   Conecta-se ao banco de dados `db`.
 
 2.  **frontend**:
-    -   Construcción multi-etapa:
-        -   **Build**: Node.js 20 + Vite para compilar los assets estáticos.
-        -   **Production**: Nginx (Alpine) para servir la aplicación.
-    -   Configurado para redirigir todas las rutas al `index.html` (SPA).
-    -   Expone la aplicación en el puerto `3000`.
-    -   Consume la API del backend configurada vía `VITE_API_URL`.
+    -   Build multi-estágio:
+        -   **Build**: Node.js 20 + Vite para compilar os assets estáticos.
+        -   **Production**: Nginx (Alpine) para servir a aplicação.
+    -   Configurado para redirecionar todas as rotas para o `index.html` (SPA).
+    -   Expõe a aplicação na porta `3000`.
+    -   Consome a API do backend configurada via `VITE_API_URL`.
 
 3.  **db**:
-    -   Imagen oficial `mysql:8.0`.
-    -   Persistencia de datos mediante volumen `db_data`.
+    -   Imagem oficial `mysql:8.0`.
+    -   Persistência de dados através do volume `db_data`.
 
-## ⚙️ Variables de Entorno
+## ⚙️ Variáveis de Ambiente
 
-Las variables clave están definidas en `docker-compose.yml` para asegurar que todo funcione sin configuración manual:
+As variáveis principais estão definidas no `docker-compose.yml` para garantir que tudo funcione sem configuração manual:
 
 -   **Backend**:
     -   `DB_CONNECTION`: mysql
     -   `DB_HOST`: db
-    -   `GEEK_JOKES_API_URL`: URL de la API externa.
+    -   `GEEK_JOKES_API_URL`: URL da API externa.
 
 -   **Frontend**:
-    -   `VITE_API_URL`: `http://localhost:8000/api` (Inyectada en tiempo de construcción).
+    -   `VITE_API_URL`: `http://localhost:8000/api` (Injetada em tempo de construção).
 
-## 📝 Justificación Técnica
+## 📝 Justificativa Técnica
 
--   **Docker Compose**: Permite orquestar todo el stack con un solo comando, garantizando que el entorno de evaluación sea idéntico al de desarrollo.
--   **Multi-stage Build (Frontend)**: Reduce drásticamente el tamaño de la imagen final y separa el entorno de construcción (Node) del de execução (Nginx), siguiendo buenas prácticas de seguridad y rendimiento.
--   **Entrypoint Script (Backend)**: Automatiza tareas repetitivas (migraciones, seeds) que normalmente requerirían intervención manual, cumpliendo con el requisito de "experiencia de ejecución simple".
--   **Separación de Responsabilidades**: Cada servicio tiene su propio contenedor y Dockerfile, facilitando el mantenimiento y escalabilidad.
+-   **Docker Compose**: Permite orquestrar todo o stack com um único comando, garantindo que o ambiente de avaliação seja idêntico ao de desenvolvimento.
+-   **Multi-stage Build (Frontend)**: Reduz drasticamente o tamanho da imagem final e separa o ambiente de construção (Node) do de execução (Nginx), seguindo boas práticas de segurança e desempenho.
+-   **Entrypoint Script (Backend)**: Automatiza tarefas repetitivas (migrações, seeds) que normalmente exigiriam intervenção manual, cumprindo o requisito de "experiência de execução simples".
+-   **Separação de Responsabilidades**: Cada serviço tem seu próprio container e Dockerfile, facilitando a manutenção e escalabilidade.
 
 ---
 
 ## ⏱️ Estimativa de Tempo de Desenvolvimento
 
-Antes de iniciar a implementação, foi realizada uma estimativa preliminar do tempo necessário para desenvolver a aplicação, considerando **apenas o cumprimento dos requisitos obrigatórios do teste técnico**, sem incluir evoluções ou funcionalidades extras.
-
-### ⏳ Tempo total estimado: **8 horas**
-
-A seguir, o detalhamento da estimativa:
-
----
-
-### 🔧 Backend (Laravel – API REST)
-
-**Tempo estimado: 3 horas**
-
-* Criação do projeto Laravel e configuração inicial
-* Configuração de autenticação com JWT
-* Criação de migrations e seeders para o usuário inicial
-* Implementação do endpoint de login
-* Implementação do endpoint protegido para consumo da API de piadas geek
-* Validações básicas, tratamento de erros e organização da estrutura
-
----
-
-### 🎨 Frontend (Vue.js – SPA)
-
-**Tempo estimado: 4 horas**
-
-* Setup do projeto Vue.js com Vue Router, Pinia e Vuetify
-* Implementação da tela de login com validações
-* Persistência do token JWT para manter a sessão após reload
-* Criação das rotas `/inicial`, `/triste`, `/poker-face` e `/feliz`
-* Gerenciamento do estado de humor da aplicação
-* Implementação da modal de piadas e lógica de progressão do humor
-
----
-
-### 📄 Documentação
-
-**Tempo estimado: 1 hora**
-
-* Criação do README.md
-* Explicação da arquitetura do projeto
-* Justificativa das escolhas tecnológicas
-* Descrição do fluxo da aplicação
-* Registro da estimativa de tempo
-
----
-
-### ✅ Conclusão
-
-A estimativa de **8 horas** foi definida com base na experiência prévia com as tecnologias utilizadas e na complexidade dos requisitos apresentados.
-Esse planejamento inicial tem como objetivo garantir transparência, organização e eficiência durante o desenvolvimento da solução.
+Para ver os detalhes da estimativa de tempo, consulte o arquivo [docs/estimation.md](docs/estimation.md).

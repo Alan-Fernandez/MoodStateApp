@@ -24,6 +24,24 @@ export const useAuthStore = defineStore('auth', {
         throw error
       }
     },
+
+    async register(userData) {
+      try {
+        const response = await api.post('/auth/register', userData)
+        
+        // La respuesta de registro incluye el token y el usuario
+        this.token = response.data.authorization.access_token
+        this.user = response.data.user
+        
+        localStorage.setItem('token', this.token)
+        localStorage.setItem('user', JSON.stringify(this.user))
+        
+        return true
+      } catch (error) {
+        console.error('Error en registro:', error)
+        throw error
+      }
+    },
     
     async fetchUser() {
       try {
