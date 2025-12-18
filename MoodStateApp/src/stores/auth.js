@@ -1,0 +1,55 @@
+import { defineStore } from 'pinia'
+import api from '@/services/api'
+
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    token: localStorage.getItem('token') || null,
+  }),
+  getters: {
+    isAuthenticated: (state) => !!state.token,
+  },
+  actions: {
+    async login(credentials) {
+      try {
+        const response = await api.post('/auth/login', credentials)
+        this.token = response.data.access_token
+        localStorage.setItem('token', this.token)
+        
+        // Obtener información del usuario inmediatamente después del login
+        await this.fetchUser()
+        return true
+      } catch (error) {
+        console.error('Error en login:', error)
+        throw error
+      }
+    },
+    
+    async fetchUser() {
+      try {
+        const response = await api.get('/auth/me')
+        this.user = response.data
+        localStorage.setItem('user', JSON.stringify(this.user))
+      } catch (error) {
+        console.error('Error obteniendo usuario:', error)
+        // Si falla obtener el usuario, tal vez el token no es válido
+        // this.logout() // Opcional: forzar logout si falla /me
+      }
+    },
+
+    async logout() {
+      try {
+        if (this.token) {
+          await api.post('/auth/logout')
+        }
+      } catch (error) {
+        console.error('Error en logout:', error)
+      } finally {
+        this.token = null
+        this.user = null
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+      }
+    },
+  },
+})
