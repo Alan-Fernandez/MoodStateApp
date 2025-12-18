@@ -37,6 +37,19 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async refreshToken() {
+      try {
+        const response = await api.post('/auth/refresh')
+        this.token = response.data.access_token
+        localStorage.setItem('token', this.token)
+        return true
+      } catch (error) {
+        console.error('Error refrescando token:', error)
+        this.logout()
+        throw error
+      }
+    },
+
     async logout() {
       try {
         if (this.token) {

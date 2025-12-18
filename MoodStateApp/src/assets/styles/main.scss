@@ -1,0 +1,14 @@
+:root {
+  --font-family-base: 'Roboto', sans-serif;
+  --spacing-unit: 8px;
+}
+
+body {
+  font-family: var(--font-family-base);
+  margin: 0;
+  padding: 0;
+}
+
+.v-application {
+  font-family: var(--font-family-base) !important;
+}
