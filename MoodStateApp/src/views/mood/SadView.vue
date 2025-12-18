@@ -4,7 +4,7 @@
       <v-col cols="12" class="text-center">
         <v-icon size="120" color="accent">mdi-emoticon-sad-outline</v-icon>
         <h1 class="text-h3 mt-4 text-on-background">Estado Triste</h1>
-        <p class="text-subtitle-1 mt-2 text-on-background opacity-70">Haz clic para intentar animarte...</p>
+        <p class="text-subtitle-1 mt-2 text-on-background opacity-70">Clique para tentar se animar...</p>
       </v-col>
     </v-row>
   </v-container>

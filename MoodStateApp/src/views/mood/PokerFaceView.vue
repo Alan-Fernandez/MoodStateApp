@@ -4,7 +4,7 @@
       <v-col cols="12" class="text-center">
         <v-icon size="120" color="primary">mdi-emoticon-neutral</v-icon>
         <h1 class="text-h3 mt-4 text-primary">Poker Face</h1>
-        <p class="text-subtitle-1 mt-2 text-on-background">Buscando algo de humor...</p>
+        <p class="text-subtitle-1 mt-2 text-on-background">Procurando um pouco de humor...</p>
         
         <v-progress-linear
           v-model="moodStore.happinessLevel"
@@ -28,8 +28,9 @@
       max-width="500"
     >
       <v-card color="surface">
-        <v-card-title class="text-h5 bg-primary text-on-primary">
-          Geek Joke Time!
+        <v-card-title class="text-h5 bg-primary text-on-primary d-flex justify-space-between align-center">
+          Hora da Piada Geek!
+          <v-btn icon="mdi-close" variant="text" density="compact" @click="closeModal"></v-btn>
         </v-card-title>
 
         <v-card-text class="pa-6 text-center">
@@ -39,15 +40,20 @@
           
           <div v-else-if="error">
             <v-alert type="error" variant="tonal">{{ error }}</v-alert>
-            <v-btn color="primary" class="mt-4" @click="fetchJoke">Reintentar</v-btn>
+            <v-btn color="primary" class="mt-4" @click="fetchJoke">Tentar novamente</v-btn>
           </div>
 
           <div v-else>
             <p class="text-h6 font-italic mb-4 text-on-surface">"{{ currentJoke?.joke }}"</p>
             <v-chip size="small" color="secondary" variant="outlined">
-              Fuente: {{ currentJoke?.source }}
+              Fonte: {{ currentJoke?.source }}
             </v-chip>
           </div>
+
+          <CelebrationAnimation 
+            :show="moodStore.isHappy" 
+            @animation-complete="animationFinished = true" 
+          />
         </v-card-text>
 
         <v-card-actions class="justify-end pa-4">
@@ -58,16 +64,16 @@
             @click="fetchJoke"
             :loading="loading"
           >
-            Otra Broma
+            Outra Piada
           </v-btn>
           
           <v-btn
-            v-else
+            v-else-if="animationFinished"
             color="success"
             variant="elevated"
             @click="finish"
           >
-            ¡Soy Feliz! (Continuar)
+            Estou Feliz! (Continuar)
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -80,6 +86,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMoodStore } from '@/stores/mood'
 import jokesService from '@/services/jokesService'
+import CelebrationAnimation from '@/components/common/CelebrationAnimation.vue'
 
 const router = useRouter()
 const moodStore = useMoodStore()
@@ -88,6 +95,7 @@ const showModal = ref(true)
 const loading = ref(false)
 const error = ref(null)
 const currentJoke = ref(null)
+const animationFinished = ref(false)
 
 const fetchJoke = async () => {
   loading.value = true
@@ -99,10 +107,15 @@ const fetchJoke = async () => {
     moodStore.incrementHappiness(34)
   } catch (err) {
     console.error(err)
-    error.value = 'No se pudo cargar la broma.'
+    error.value = 'Não foi possível carregar a piada.'
   } finally {
     loading.value = false
   }
+}
+
+const closeModal = () => {
+  showModal.value = false
+  router.push('/inicial')
 }
 
 const finish = () => {

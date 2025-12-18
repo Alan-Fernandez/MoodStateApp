@@ -1,10 +1,10 @@
 <template>
   <v-form @submit.prevent="handleSubmit" ref="form" class="login-form">
-    <h2 class="text-h4 font-weight-bold mb-6 text-primary">Iniciar Sesión</h2>
+    <h2 class="text-h4 font-weight-bold mb-6 text-primary">Entrar</h2>
     
     <v-text-field
       v-model="email"
-      label="Correo Electrónico"
+      label="E-mail"
       name="email"
       prepend-inner-icon="mdi-email-outline"
       variant="outlined"
@@ -15,7 +15,7 @@
 
     <v-text-field
       v-model="password"
-      label="Contraseña"
+      label="Senha"
       name="password"
       prepend-inner-icon="mdi-lock-outline"
       variant="outlined"
@@ -46,7 +46,7 @@
       class="text-none font-weight-bold rounded-pill"
       elevation="2"
     >
-      Ingresar
+      Entrar
     </v-btn>
   </v-form>
 </template>

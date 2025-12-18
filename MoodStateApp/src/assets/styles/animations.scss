@@ -1,0 +1,63 @@
+// Animation configurations
+$celebration-duration: 1.5s;
+$celebration-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+@keyframes pop-in-out {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100%) rotate(0deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.celebration-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.02); /* Subtle background to separate but not block */
+}
+
+.celebration-icon {
+  animation: pop-in-out $celebration-duration $celebration-ease forwards;
+  font-size: 5rem;
+  color: var(--color-primary);
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-accent);
+  animation: confetti-fall 3s linear infinite;
+}

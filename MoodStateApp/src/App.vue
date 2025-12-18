@@ -5,8 +5,8 @@ import { useRouter } from 'vue-router'
 const authStore = useAuthStore()
 const router = useRouter()
 
-const logout = () => {
-  authStore.logout()
+const logout = async () => {
+  await authStore.logout()
   router.push('/login')
 }
 </script>
@@ -16,7 +16,7 @@ const logout = () => {
     <v-app-bar color="primary" app v-if="authStore.isAuthenticated">
       <v-toolbar-title>MoodStateApp</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text @click="logout">Logout</v-btn>
+      <v-btn text @click="logout">Sair</v-btn>
     </v-app-bar>
 
     <v-main>

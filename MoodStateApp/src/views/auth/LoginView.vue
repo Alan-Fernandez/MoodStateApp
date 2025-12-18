@@ -10,7 +10,7 @@
                 <v-icon size="80" color="white" class="mb-4">mdi-emoticon-happy-outline</v-icon>
                 <h1 class="text-h3 font-weight-bold mb-2">MoodState</h1>
                 <p class="text-subtitle-1 opacity-90">
-                  Tu viaje emocional comienza aquí.
+                  Sua jornada emocional começa aqui.
                 </p>
               </div>
             </v-col>
