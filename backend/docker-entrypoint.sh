@@ -15,6 +15,10 @@ if [ ! -f ".env" ]; then
     cp .env.example .env
 fi
 
+# Clear caches to ensure .env is loaded correctly
+echo "Clearing application cache..."
+php artisan optimize:clear
+
 # Wait for database to be ready
 echo "Waiting for database connection..."
 php -r "
