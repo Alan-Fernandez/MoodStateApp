@@ -4,6 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JokeController;
 
+Route::get('/test-config', function () {
+    return response()->json([
+        'env_jwt_secret' => env('JWT_SECRET'),
+        'config_jwt_secret' => config('jwt.secret'),
+        'config_jwt_algo' => config('jwt.algo'),
+    ]);
+});
+
 Route::group([
     'prefix' => 'auth'
 ], function ($router) {

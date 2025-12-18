@@ -15,6 +15,7 @@ class AuthController extends Controller
      */
     public function login()
     {
+        \Illuminate\Support\Facades\Log::info('JWT Secret check: ' . config('jwt.secret'));
         $credentials = request(['email', 'password']);
 
         if (! $token = $this->guard()->attempt($credentials)) {

@@ -22,7 +22,19 @@ Para manter este arquivo limpo e legível, a documentação detalhada foi organi
 
 ## 🚀 Início Rápido
 
-Se você já tem experiência com Laravel, aqui estão os comandos essenciais para começar:
+### Com Docker (Recomendado)
+
+Para iniciar o projeto completo (Backend + Frontend + Banco de Dados), execute na raiz do repositório:
+
+```bash
+docker-compose up --build
+```
+
+O ambiente será configurado automaticamente.
+
+### Instalação Manual (Desenvolvimento Local)
+
+Se você já tem experiência com Laravel e prefere rodar sem Docker:
 
 ```bash
 # 1. Instalar dependências
