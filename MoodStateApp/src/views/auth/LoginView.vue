@@ -1,49 +1,29 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4">
-        <v-card class="elevation-12">
-          <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Iniciar Sesión</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-form @submit.prevent="handleLogin" ref="form">
-              <v-text-field
-                v-model="email"
-                label="Email"
-                name="email"
-                prepend-icon="mdi-account"
-                type="email"
-                :rules="[rules.required, rules.email]"
-                required
-              ></v-text-field>
+  <v-container class="fill-height bg-background" fluid>
+    <v-row align="center" justify="center" class="fill-height">
+      <v-col cols="12" sm="10" md="8" lg="6">
+        <v-card class="elevation-10 rounded-xl overflow-hidden">
+          <v-row no-gutters>
+            <!-- Image Side (Brand) -->
+            <v-col cols="12" md="6" class="bg-gradient-primary d-flex flex-column align-center justify-center text-white p-5">
+              <div class="text-center pa-10">
+                <v-icon size="80" color="white" class="mb-4">mdi-emoticon-happy-outline</v-icon>
+                <h1 class="text-h3 font-weight-bold mb-2">MoodState</h1>
+                <p class="text-subtitle-1 opacity-90">
+                  Tu viaje emocional comienza aquí.
+                </p>
+              </div>
+            </v-col>
 
-              <v-text-field
-                v-model="password"
-                id="password"
-                label="Contraseña"
-                name="password"
-                prepend-icon="mdi-lock"
-                type="password"
-                :rules="[rules.required]"
-                required
-              ></v-text-field>
-              
-              <v-alert
-                v-if="error"
-                type="error"
-                dense
-                outlined
-                class="mt-3"
-              >
-                {{ error }}
-              </v-alert>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" :loading="loading" @click="handleLogin">Entrar</v-btn>
-          </v-card-actions>
+            <!-- Form Side -->
+            <v-col cols="12" md="6" class="bg-surface pa-8 d-flex align-center">
+              <LoginForm 
+                :loading="loading"
+                :error="error"
+                @submit="handleLogin"
+              />
+            </v-col>
+          </v-row>
         </v-card>
       </v-col>
     </v-row>
@@ -54,42 +34,36 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import LoginForm from '@/components/auth/LoginForm.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
 
-const email = ref('')
-const password = ref('')
 const loading = ref(false)
 const error = ref('')
-const form = ref(null)
 
-const rules = {
-  required: value => !!value || 'Requerido.',
-  email: value => {
-    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return pattern.test(value) || 'E-mail inválido.'
-  },
-}
-
-const handleLogin = async () => {
-  const { valid } = await form.value.validate()
+const handleLogin = async (credentials) => {
+  loading.value = true
+  error.value = ''
   
-  if (valid) {
-    loading.value = true
-    error.value = ''
-    
-    try {
-      await authStore.login({
-        email: email.value,
-        password: password.value
-      })
-      router.push('/')
-    } catch (err) {
-      error.value = 'Credenciales inválidas o error en el servidor.'
-    } finally {
-      loading.value = false
-    }
+  try {
+    await authStore.login(credentials)
+    router.push('/')
+  } catch (err) {
+    error.value = 'Credenciales inválidas o error en el servidor.'
+  } finally {
+    loading.value = false
   }
 }
 </script>
+
+<style scoped>
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+</style>
+

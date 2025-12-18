@@ -16,17 +16,23 @@ export default createVuetify({
     },
   },
   theme: {
-    defaultTheme: 'light',
+    defaultTheme: 'moodTheme',
     themes: {
-      light: {
+      moodTheme: {
+        dark: true,
         colors: {
-          primary: '#1976D2',
-          secondary: '#424242',
-          accent: '#82B1FF',
+          background: '#121417',
+          surface: '#1F2937',
+          primary: '#00D084',
+          secondary: '#1F2937',
+          accent: '#4FD1C5',
           error: '#FF5252',
           info: '#2196F3',
-          success: '#4CAF50',
+          success: '#00D084',
           warning: '#FFC107',
+          'on-background': '#E5E7EB',
+          'on-surface': '#E5E7EB',
+          'on-primary': '#121417',
         },
       },
     },

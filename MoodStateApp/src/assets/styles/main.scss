@@ -1,14 +1,43 @@
 :root {
   --font-family-base: 'Roboto', sans-serif;
   --spacing-unit: 8px;
+
+  /* Color Palette */
+  --color-background: #121417;
+  --color-primary: #00D084;
+  --color-secondary: #1F2937;
+  --color-text-main: #E5E7EB;
+  --color-accent: #4FD1C5;
 }
 
 body {
   font-family: var(--font-family-base);
   margin: 0;
   padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-text-main);
 }
 
 .v-application {
   font-family: var(--font-family-base) !important;
+  background-color: var(--color-background) !important;
+  color: var(--color-text-main) !important;
 }
+
+// Global Utility Classes
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%) !important;
+}
+
+.text-primary-custom {
+  color: var(--color-primary) !important;
+}
+
+.text-accent-custom {
+  color: var(--color-accent) !important;
+}
+
+.rounded-xl {
+  border-radius: 24px !important;
+}
+
